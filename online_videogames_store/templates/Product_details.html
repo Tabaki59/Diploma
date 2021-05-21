@@ -1,0 +1,115 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <title>Online store videogames</title>
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+  <!-- Custom styles for this template -->
+  <link href="css/shop-homepage.css" rel="stylesheet">
+
+</head>
+<style>
+    body {
+      padding-top: 56px;
+    }
+</style>
+<body>
+
+  <!-- Navigation -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+    <div class="container" style="max-width: 1390px!important;">
+      <a class="navbar-brand" href="{% url 'Base' %}">Онлайн магазин ретро видеоигр</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarResponsive">
+        <ul class="navbar-nav ml-auto">
+                      <li class="nav-item" >
+            <a class="nav-link" href="{% url 'Base' %}">Главная<span class="badge badge-pill badge-danger"></span></a>
+          </li>
+                                  <li class="nav-item">
+            <a class="nav-link" href="{% url 'InfoView' %}">Справка<span class="badge badge-pill badge-danger"></span></a>
+          </li>
+                      <li class="nav-item">
+            <a class="nav-link" href="{% url 'ContactView' %}">Контакты <span class="badge badge-pill badge-danger"></span></a>
+          </li>
+            {% if user.is_authenticated %}
+                                              <li class="nav-item" style="padding-left: 110px">
+            <a class="nav-link" href="{% url 'CartView' %}">Корзина  <span class="badge badge-pill badge-danger">{{ cart.count }}</span></a>
+          </li>
+                                                          <li class="nav-item">
+            <a class="nav-link" href="{% url 'FavView' %}">Избранное <span class="badge badge-pill badge-danger">{{ favorites.count }}</span></a>
+          </li>
+                                                                          <li class="nav-item">
+            <a class="nav-link" href="{% url 'OrdersView' %}">Заказы<span class="badge badge-pill badge-danger"></span></a>
+          </li>
+            {% endif %}
+        </ul>
+      </div>
+        <ul class="navbar-nav ml-auto">
+            {% if user.is_authenticated %}
+                                          <li class="nav-item" style="padding-left: 110px">
+            <a class="nav-link" href="{% url 'User_Details' %}">{{ user.username }}<span class="badge badge-pill badge-danger"></span></a>
+          </li>
+                                                          <li class="nav-item">
+            <a class="nav-link" href="{% url 'Logout_user' %}">Выйти<span class="badge badge-pill badge-danger"></span></a>
+          </li>
+            {% else %}
+                                                      <li class="nav-item" style="padding-left: 110px">
+            <a class="nav-link" href="{% url 'Login_user' %}">Войти <span class="badge badge-pill badge-danger"></span></a>
+          </li>
+                                                                      <li class="nav-item">
+            <a class="nav-link" href="{% url 'Create_user' %}">Создать аккаунт <span class="badge badge-pill badge-danger"></span></a>
+          </li>
+            {% endif %}
+        </ul>
+    </div>
+  </nav>
+
+
+<div class="card-body">
+<div class="row">
+    <div class="col-md-4">
+        <img class="img-fluid" src="{% static '/' %}{{ product.photo }}" alt=""/>
+    </div>
+    <div class="col-md-8">
+        <h3>{{ product.product_name }}</h3>
+        <p>Цена: {{ product.price }} руб.</p>
+        <p>Описание: {{ product.description }}</p>
+        {% if product.category.category_id != 2 %}
+            <p>Жанр: {{ product.genre }}</p>
+            <p>Платформа: {{ product.platform }}</p>
+            <p>Язык оригинала: {{ product.language }}</p>
+            <p>Локлизация: {{ product.localization }}</p>
+        {% endif %}
+        <hr>
+        {% if user.is_authenticated %}
+
+                      {% if  favorites %}
+                            <a href="{% url 'Del_from_fav' product.product_id %}"> <button style=" background-color: #32b736;" class="btn btn-danger">Удалить из избранного</button> </a>
+                          {% else %}
+                           <a href="{% url 'Add_to_fav' product.product_id %}"> <button style="  background-color: #32b736;" class="btn btn-danger">В избранное</button> </a>
+                          {% endif %}
+
+                        {% if  cart %}
+                        <a href="{% url 'Del_from_cart' product.product_id %}"> <button class="btn btn-danger">Убрать из корзины</button> </a>
+                        {% else %}
+                           <a href="{% url 'Add_to_cart' product.product_id %}"> <button class="btn btn-danger">В Корзину</button> </a>
+                          {% endif %}
+                        {% endif %}
+    </div>
+ </div>
+</div>
+</body>
+</html>

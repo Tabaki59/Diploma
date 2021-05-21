@@ -1,0 +1,124 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <title>Online store videogames</title>
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+  <!-- Custom styles for this template -->
+  <link href="css/shop-homepage.css" rel="stylesheet">
+
+</head>
+<style>
+    body {
+      padding-top: 56px;
+    }
+</style>
+<body>
+
+  <!-- Navigation -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+    <div class="container" style="max-width: 1390px!important;">
+      <a class="navbar-brand" href="{% url 'Base' %}">Онлайн магазин ретро видеоигр</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarResponsive">
+        <ul class="navbar-nav ml-auto">
+                      <li class="nav-item" >
+            <a class="nav-link" href="{% url 'Base' %}">Главная<span class="badge badge-pill badge-danger"></span></a>
+          </li>
+                                  <li class="nav-item">
+            <a class="nav-link" href="{% url 'InfoView' %}">Справка<span class="badge badge-pill badge-danger"></span></a>
+          </li>
+                      <li class="nav-item">
+            <a class="nav-link" href="{% url 'ContactView' %}">Контакты <span class="badge badge-pill badge-danger"></span></a>
+          </li>
+            {% if user.is_authenticated %}
+                                              <li class="nav-item" style="padding-left: 110px">
+            <a class="nav-link" href="{% url 'CartView' %}">Корзина  <span class="badge badge-pill badge-danger">{{ cart.count }}</span></a>
+          </li>
+                                                          <li class="nav-item">
+            <a class="nav-link" href="{% url 'FavView' %}">Избранное <span class="badge badge-pill badge-danger">{{ favorites.count }}</span></a>
+          </li>
+                                                                          <li class="nav-item">
+            <a class="nav-link" href="{% url 'OrdersView' %}">Заказы<span class="badge badge-pill badge-danger"></span></a>
+          </li>
+            {% endif %}
+        </ul>
+      </div>
+        <ul class="navbar-nav ml-auto">
+            {% if user.is_authenticated %}
+                                          <li class="nav-item" style="padding-left: 110px">
+            <a class="nav-link" href="{% url 'User_Details' %}">{{ user.username }}<span class="badge badge-pill badge-danger"></span></a>
+          </li>
+                                                          <li class="nav-item">
+            <a class="nav-link" href="{% url 'Logout_user' %}">Выйти<span class="badge badge-pill badge-danger"></span></a>
+          </li>
+            {% else %}
+                                                      <li class="nav-item" style="padding-left: 110px">
+            <a class="nav-link" href="{% url 'Login_user' %}">Войти <span class="badge badge-pill badge-danger"></span></a>
+          </li>
+                                                                      <li class="nav-item">
+            <a class="nav-link" href="{% url 'Create_user' %}">Создать аккаунт <span class="badge badge-pill badge-danger"></span></a>
+          </li>
+            {% endif %}
+        </ul>
+    </div>
+  </nav>
+
+  <div class="search-block inner-table-block" style="margin: auto; width: 30%; margin-top: 14px;">
+      {% if user.is_authenticated != True %}
+          <a>Пожалуйста авторизуйтесь для добавления товаров в избранное и корзину, а также для поиска</a>
+           <p></p>
+      {% else %}
+      <div class="search-wrapper">
+					<form action="{% url 'Search' %}" class="search" method="post">
+                         {% csrf_token %}
+						<div class="search-input-div" >
+							<input class="search-input" type="text" name="q" value="" placeholder="Поиск" size="20" maxlength="150" autocomplete="off" style="width: 400px;">
+                            <button class="btn btn-search" type="submit" value="Найти">
+									<i class="svg inline  svg-inline-search2" aria-hidden="true"><svg class="" width="17" height="17" viewBox="0 0 17 17" aria-hidden="true"><path class="cls-1" d="M16.709,16.719a1,1,0,0,1-1.412,0l-3.256-3.287A7.475,7.475,0,1,1,15,7.5a7.433,7.433,0,0,1-1.549,4.518l3.258,3.289A1,1,0,0,1,16.709,16.719ZM7.5,2A5.5,5.5,0,1,0,13,7.5,5.5,5.5,0,0,0,7.5,2Z"></path></svg></i>								</button>
+														<span class="close-block inline-search-hide"><span class="svg svg-close close-icons colored_theme_hover"></span></span>
+						</div>
+					</form>
+        </div>
+        {% endif %}
+  </div>
+
+<div  style="margin: auto; width: 60%; margin-top: 14px;">
+        <div class="row">
+          <div class="col-lg-4 col-md-6 mb-4" style="margin-top: 15px; margin-left: auto;">
+            <div class="card h-100">
+               <a href="{% url 'Games' 0 0%}"><img class="card-img-top" src="{% static '/Games_img.jpg' %}" alt="" /></a>
+              <div class="card-body">
+                <h4 class="card-title">
+                  <a>Игры</a>
+                </h4>
+              </div>
+            </div>
+          </div>
+            <div class="col-lg-4 col-md-6 mb-4" style="margin-top: 15px; margin-left: auto; margin-right: auto;">
+            <div class="card h-100">
+               <a href="{% url 'Consoles'%}"><img class="card-img-top" src="{% static '/Consoles_img.jpg' %}" alt="" /></a>
+              <div class="card-body">
+                <h4 class="card-title">
+                  <a>Консоли</a>
+                </h4>
+              </div>
+            </div>
+          </div>
+        </div>
+</div>
+</body>
+</html>
